@@ -37,21 +37,6 @@ public class PlayerController {
         return this.playerService.getPlayerById(id);
     }
 
-//    @CrossOrigin
-//    @GetMapping("/loggedPlayer")
-//    public PlayerOutputView getPlayerFromDbView() {
-//        String secretKey = "securitysecuritysecuritysecurity";
-//
-//        String token = FeignClientInterceptor.getBearerTokenHeader();
-//        String email = Jwts.parser()
-//                .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
-//                .parseClaimsJws(token.replace("Bearer ", ""))
-//                .getBody()
-//                .getSubject();
-//
-//        return this.playerService.getPlayerByEmail(email);
-//    }
-
     @CrossOrigin
     @PostMapping("/register")
     public OutputMessageView outputMessageView(@RequestBody PlayerRegisterDto playerRegisterDto) {
