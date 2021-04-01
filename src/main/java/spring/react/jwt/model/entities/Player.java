@@ -13,7 +13,10 @@ public class Player extends BaseEntity{
     private Role role;
     private String email;
     private String password;
-    private String city;
+    private City city;
+    private int points;
+    private String pictureUrl;
+    private String pictureId;
 
     public Player() {
     }
@@ -81,12 +84,40 @@ public class Player extends BaseEntity{
         this.password = password;
     }
 
-    @Column(name="city")
-    public String getCity() {
+    @Column(name = "points")
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    @Column(name = "picture_url")
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    @Column(name = "picture_id")
+    public String getPictureId() {
+        return pictureId;
+    }
+
+    public void setPictureId(String pictureId) {
+        this.pictureId = pictureId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 }

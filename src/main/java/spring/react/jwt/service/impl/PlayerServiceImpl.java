@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import spring.react.jwt.model.entities.City;
 import spring.react.jwt.model.entities.Player;
 import spring.react.jwt.model.entities.Role;
 import spring.react.jwt.model.service.PlayerRegisterServiceModel;
 import spring.react.jwt.model.view.OutputMessageView;
 import spring.react.jwt.model.view.PlayerGetFromDbView;
 import spring.react.jwt.model.view.PlayerOutputView;
+import spring.react.jwt.repositories.CityRepository;
 import spring.react.jwt.repositories.PlayerRepository;
 import spring.react.jwt.service.PlayerService;
 
@@ -23,12 +25,14 @@ public class PlayerServiceImpl implements PlayerService {
     private final PlayerRepository playerRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+    private final CityRepository cityRepository;
 
     @Autowired
-    public PlayerServiceImpl(PlayerRepository playerRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public PlayerServiceImpl(PlayerRepository playerRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, CityRepository cityRepository) {
         this.playerRepository = playerRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.cityRepository = cityRepository;
     }
 
 
@@ -52,6 +56,8 @@ public class PlayerServiceImpl implements PlayerService {
                 player.setRole(Role.ADMIN);
                 player.setRank(1);
                 player.setPassword(this.passwordEncoder.encode(playerRegisterServiceModel.getPassword()));
+                City city = this.cityRepository.findByName(playerRegisterServiceModel.getCity());
+                player.setCity(city);
 
                 outputMessageView.setSuccess(true);
                 outputMessageView.setMessage("Успешно се регистрира играч " + player.getName() + " " + player.getLastName());
@@ -60,7 +66,7 @@ public class PlayerServiceImpl implements PlayerService {
 
             } else {
                 player.setRole(Role.USER);
-                player.setRank(this.playerRepository.getAllPlayersByCity(player.getCity()).size() + 1);
+                player.setRank(this.playerRepository.getAllPlayersByCity(player.getCity().getName()).size() + 1);
                 player.setPassword(this.passwordEncoder.encode(playerRegisterServiceModel.getPassword()));
 
                 outputMessageView.setSuccess(true);
