@@ -8,12 +8,13 @@ import org.springframework.stereotype.Service;
 import spring.react.jwt.model.entities.City;
 import spring.react.jwt.model.entities.Player;
 import spring.react.jwt.model.entities.Role;
+import spring.react.jwt.model.service.CityAddServiceModel;
 import spring.react.jwt.model.service.PlayerRegisterServiceModel;
 import spring.react.jwt.model.view.OutputMessageView;
 import spring.react.jwt.model.view.PlayerGetFromDbView;
 import spring.react.jwt.model.view.PlayerOutputView;
-import spring.react.jwt.repositories.CityRepository;
 import spring.react.jwt.repositories.PlayerRepository;
+import spring.react.jwt.service.CityService;
 import spring.react.jwt.service.PlayerService;
 
 import java.util.ArrayList;
@@ -25,14 +26,14 @@ public class PlayerServiceImpl implements PlayerService {
     private final PlayerRepository playerRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
-    private final CityRepository cityRepository;
+    private final CityService cityService;
 
     @Autowired
-    public PlayerServiceImpl(PlayerRepository playerRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, CityRepository cityRepository) {
+    public PlayerServiceImpl(PlayerRepository playerRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, CityService cityService) {
         this.playerRepository = playerRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
-        this.cityRepository = cityRepository;
+        this.cityService = cityService;
     }
 
 
@@ -40,7 +41,6 @@ public class PlayerServiceImpl implements PlayerService {
     public OutputMessageView playerRegister(PlayerRegisterServiceModel playerRegisterServiceModel) {
 
         OutputMessageView outputMessageView = new OutputMessageView();
-
 
         if(!playerRegisterServiceModel.getPassword().equals(playerRegisterServiceModel.getConfirmPassword())) {
             outputMessageView.setSuccess(false);
@@ -52,12 +52,19 @@ public class PlayerServiceImpl implements PlayerService {
 
             Player player = this.modelMapper.map(playerRegisterServiceModel, Player.class);
 
+            City city = this.cityService.findCityByName(playerRegisterServiceModel.getCity());
+            if(city != null) {
+                player.setCity(city);
+            }else {
+                this.cityService.addCityToDb(new CityAddServiceModel(""));
+                player.setCity(this.cityService.findCityByName(""));
+            }
+
             if(this.playerRepository.getAllPlayersByCity(playerRegisterServiceModel.getCity()).size() < 1) {
                 player.setRole(Role.ADMIN);
                 player.setRank(1);
                 player.setPassword(this.passwordEncoder.encode(playerRegisterServiceModel.getPassword()));
-                City city = this.cityRepository.findByName(playerRegisterServiceModel.getCity());
-                player.setCity(city);
+                player.setPoints(0);
 
                 outputMessageView.setSuccess(true);
                 outputMessageView.setMessage("Успешно се регистрира играч " + player.getName() + " " + player.getLastName());
@@ -66,8 +73,10 @@ public class PlayerServiceImpl implements PlayerService {
 
             } else {
                 player.setRole(Role.USER);
+
                 player.setRank(this.playerRepository.getAllPlayersByCity(player.getCity().getName()).size() + 1);
                 player.setPassword(this.passwordEncoder.encode(playerRegisterServiceModel.getPassword()));
+                player.setPoints(0);
 
                 outputMessageView.setSuccess(true);
                 outputMessageView.setMessage("Успешно се регистрира играч " + player.getName() + " " + player.getLastName());

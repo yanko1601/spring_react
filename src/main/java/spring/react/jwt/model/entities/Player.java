@@ -15,8 +15,6 @@ public class Player extends BaseEntity{
     private String password;
     private City city;
     private int points;
-    private String pictureUrl;
-    private String pictureId;
 
     public Player() {
     }
@@ -91,24 +89,6 @@ public class Player extends BaseEntity{
 
     public void setPoints(int points) {
         this.points = points;
-    }
-
-    @Column(name = "picture_url")
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
-
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-
-    @Column(name = "picture_id")
-    public String getPictureId() {
-        return pictureId;
-    }
-
-    public void setPictureId(String pictureId) {
-        this.pictureId = pictureId;
     }
 
     @ManyToOne

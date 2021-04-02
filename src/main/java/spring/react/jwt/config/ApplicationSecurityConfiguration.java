@@ -51,8 +51,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate").permitAll()
-                .antMatchers(HttpMethod.POST, "/player/register").permitAll()
+                .antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -63,6 +63,6 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         web.ignoring()
                 .antMatchers("/player/all", "/")
                 .antMatchers(HttpMethod.OPTIONS, "**")
-                .antMatchers(HttpMethod.POST, "/player/register");
+                .antMatchers(HttpMethod.POST, "/player/register", "/authenticate");
     }
 }

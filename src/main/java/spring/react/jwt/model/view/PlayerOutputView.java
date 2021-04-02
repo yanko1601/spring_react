@@ -1,12 +1,14 @@
 package spring.react.jwt.model.view;
 
+import spring.react.jwt.model.entities.City;
+
 public class PlayerOutputView {
 
     private Long id;
     private String name;
     private String lastName;
     private int rank;
-    private String city;
+    private City city;
 
     public PlayerOutputView() {
     }
@@ -43,11 +45,11 @@ public class PlayerOutputView {
         this.rank = rank;
     }
 
-    public String getCity() {
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 }
