@@ -1,6 +1,7 @@
 package spring.react.jwt.model.view;
 
 import spring.react.jwt.model.entities.City;
+import spring.react.jwt.model.entities.Role;
 
 public class PlayerOutputView {
 
@@ -8,6 +9,7 @@ public class PlayerOutputView {
     private String name;
     private String lastName;
     private int rank;
+    private Role role;
     private City city;
 
     public PlayerOutputView() {
@@ -51,5 +53,13 @@ public class PlayerOutputView {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

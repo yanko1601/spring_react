@@ -51,6 +51,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
                 .antMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -61,7 +62,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/player/all", "/")
+                .antMatchers("/player/all", "/", "/city/getAll")
                 .antMatchers(HttpMethod.OPTIONS, "**")
                 .antMatchers(HttpMethod.POST, "/player/register", "/authenticate");
     }
