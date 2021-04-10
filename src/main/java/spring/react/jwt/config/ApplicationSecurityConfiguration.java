@@ -63,7 +63,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .antMatchers("/player/all", "/", "/city/getAll")
-                .antMatchers(HttpMethod.OPTIONS, "**")
+                .antMatchers(HttpMethod.OPTIONS, "/**")
                 .antMatchers(HttpMethod.POST, "/player/register", "/authenticate");
     }
 }
