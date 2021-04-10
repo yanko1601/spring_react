@@ -6,6 +6,7 @@ import spring.react.jwt.model.entities.City;
 import spring.react.jwt.model.entities.Court;
 import spring.react.jwt.model.entities.Game;
 import spring.react.jwt.model.entities.Player;
+import spring.react.jwt.model.view.GameOutputView;
 import spring.react.jwt.repositories.ChallengeRepository;
 import spring.react.jwt.repositories.CourtRepository;
 import spring.react.jwt.repositories.GameRepository;
@@ -13,6 +14,7 @@ import spring.react.jwt.repositories.PlayerRepository;
 import spring.react.jwt.service.GameService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -54,5 +56,27 @@ public class GameServiceImpl implements GameService {
         game.setDateTime(LocalDateTime.now().plusDays(2));
 
         this.gameRepository.save(game);
+    }
+
+    @Override
+    public List<GameOutputView> getAllGamesNotFinished() {
+        List<Game>allGames = this.gameRepository.getAllGamesNotFinished();
+        List<GameOutputView>resultGames = new ArrayList<>();
+
+        allGames.forEach(g -> {
+            GameOutputView outputGame = new GameOutputView();
+            outputGame.setId(g.getId());
+            outputGame.setFirstPlayerFullName(String.format("%s %s", g.getFirstPlayer().getName(), g.getFirstPlayer().getLastName()));
+            outputGame.setSecondPlayerFullName(String.format("%s %s", g.getSecondPlayer().getName(), g.getSecondPlayer().getLastName()));
+            outputGame.setCity(g.getFirstPlayer().getCity().getName());
+            outputGame.setPlace(String.format("%s - %d", g.getCourt().getComplex(), g.getCourt().getCourtNumber()));
+            outputGame.setTime(String.format("%d-%d-%d %d:00"
+                                                ,g.getDateTime().getDayOfMonth()
+                                                ,g.getDateTime().getMonthValue()
+                                                ,g.getDateTime().getYear()
+                                                ,g.getDateTime().getHour()));
+            resultGames.add(outputGame);
+        });
+        return resultGames;
     }
 }
