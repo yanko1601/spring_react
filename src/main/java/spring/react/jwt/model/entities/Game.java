@@ -15,6 +15,7 @@ public class Game extends BaseEntity{
     private Player secondPlayer;
     private Player winner;
     private Player looser;
+    private Court court;
 
     public Game() {
     }
@@ -93,5 +94,15 @@ public class Game extends BaseEntity{
 
     public void setLooser(Player looser) {
         this.looser = looser;
+    }
+
+    @ManyToOne()
+    @JoinColumn(name = "court_id", referencedColumnName = "id")
+    public Court getCourt() {
+        return court;
+    }
+
+    public void setCourt(Court court) {
+        this.court = court;
     }
 }

@@ -123,6 +123,12 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    public Player findPlayerById(Long id) {
+
+        return this.playerRepository.findPlayerById(id);
+    }
+
+    @Override
     public List<Player> getAllPlayersFromCity(String city) {
 
         return this.playerRepository.getAllPlayersByCity(city);

@@ -19,6 +19,8 @@ public interface PlayerService {
 
     PlayerGetFromDbView getPlayerById(Long id);
 
+    Player findPlayerById(Long id);
+
     List<Player> getAllPlayersFromCity(String city);
 
     List<PlayerForChallengeListView>getPlayersForChallenge(Long id);
