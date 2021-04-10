@@ -39,4 +39,11 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         this.challengeRepository.save(challenge);
     }
+
+    @Override
+    public void declineChallenge(Long challengingPlayerId, Long challengedPlayerId) {
+        Challenge challenge = this.findChallengeBySecondPlayerChallenged(challengingPlayerId, challengedPlayerId);
+        challenge.setActive(false);
+        this.challengeRepository.save(challenge);
+    }
 }

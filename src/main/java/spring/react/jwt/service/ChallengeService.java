@@ -9,4 +9,6 @@ public interface ChallengeService {
     Challenge findChallengeBySecondPlayerChallenged(Long firstId, Long secondId);
 
     void setChallenge(Long challengingPlayerId, Long challengedPlayerId);
+
+    void declineChallenge(Long challengingPlayerId, Long challengedPlayerId);
 }
