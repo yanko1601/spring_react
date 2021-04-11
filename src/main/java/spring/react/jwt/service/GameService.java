@@ -12,4 +12,6 @@ public interface GameService {
     void gameCreate(Long firstPlayerId, Long secondPlayerId);
 
     List<GameOutputView> getAllGamesNotFinished();
+
+    void setResult(Long id);
 }

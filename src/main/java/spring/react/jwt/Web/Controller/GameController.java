@@ -3,6 +3,7 @@ package spring.react.jwt.Web.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.react.jwt.model.dtos.GameCreateDto;
+import spring.react.jwt.model.dtos.ResultSetDto;
 import spring.react.jwt.model.entities.Game;
 import spring.react.jwt.model.view.GameOutputView;
 import spring.react.jwt.model.view.OutputMessageView;
@@ -39,5 +40,18 @@ public class GameController {
     public List<GameOutputView>getAllGames() {
 
         return this.gameService.getAllGamesNotFinished();
+    }
+
+    @CrossOrigin
+    @PostMapping("/setresult")
+    public OutputMessageView setResult(@RequestBody ResultSetDto resultSetDto) {
+
+        this.gameService.setResult(resultSetDto.getGameId());
+
+        OutputMessageView message = new OutputMessageView();
+        message.setSuccess(true);
+        message.setMessage("Резултата е въведен");
+
+        return message;
     }
 }

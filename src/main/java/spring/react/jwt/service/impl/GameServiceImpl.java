@@ -16,6 +16,7 @@ import spring.react.jwt.service.GameService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 @Service
@@ -78,5 +79,38 @@ public class GameServiceImpl implements GameService {
             resultGames.add(outputGame);
         });
         return resultGames;
+    }
+
+    @Override
+    public void setResult(Long id) {
+
+        Game game = this.gameRepository.findGameByid(id);
+        if(new Random().nextInt(2) > 0) {
+            game.setWinner(game.getSecondPlayer());
+            game.setLooser(game.getFirstPlayer());
+            game.setWinnerGames(6);
+            game.setLooserGames(new Random().nextInt(5));
+            game.setFinished(true);
+            handleWinner(game.getSecondPlayer(), game.getFirstPlayer());
+        }else {
+            game.setWinner(game.getFirstPlayer());
+            game.setLooser(game.getSecondPlayer());
+            game.setWinnerGames(6);
+            game.setLooserGames(new Random().nextInt(5));
+            game.setFinished(true);
+            handleWinner(game.getFirstPlayer(), game.getSecondPlayer());
+        }
+
+        this.gameRepository.save(game);
+    }
+
+    private void handleWinner(Player winner, Player looser) {
+        if(winner.getRank() > looser.getRank()) {
+            int temp = winner.getRank();
+            winner.setRank(looser.getRank());
+            looser.setRank(temp);
+            this.playerRepository.save(winner);
+            this.playerRepository.save(looser);
+        }
     }
 }

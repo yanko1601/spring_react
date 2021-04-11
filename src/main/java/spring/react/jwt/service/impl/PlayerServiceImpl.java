@@ -98,7 +98,10 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public List<PlayerOutputView> getAllPlayers() {
         List<PlayerOutputView>allPlayers = new ArrayList<>();
-        List<Player>allPlayerFromDb = this.playerRepository.getAllPlayers();
+        List<Player>allPlayerFromDb = this.playerRepository.getAllPlayers()
+                .stream()
+                .sorted((a, b) -> a.getRank() - b.getRank())
+                .collect(Collectors.toList());
 
         allPlayerFromDb.forEach(pl -> {
             allPlayers.add(this.modelMapper.map(pl, PlayerOutputView.class));
