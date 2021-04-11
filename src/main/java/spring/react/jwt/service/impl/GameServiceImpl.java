@@ -6,6 +6,7 @@ import spring.react.jwt.model.entities.City;
 import spring.react.jwt.model.entities.Court;
 import spring.react.jwt.model.entities.Game;
 import spring.react.jwt.model.entities.Player;
+import spring.react.jwt.model.view.GameFinishedOutputView;
 import spring.react.jwt.model.view.GameOutputView;
 import spring.react.jwt.repositories.ChallengeRepository;
 import spring.react.jwt.repositories.CourtRepository;
@@ -79,6 +80,24 @@ public class GameServiceImpl implements GameService {
             resultGames.add(outputGame);
         });
         return resultGames;
+    }
+
+    @Override
+    public List<GameFinishedOutputView> getAllGamesFinished() {
+        List<Game>allGames = this.gameRepository.getAllGamesFinished();
+        List<GameFinishedOutputView>resultfinGames = new ArrayList<>();
+
+        allGames.forEach(g -> {
+            GameFinishedOutputView outputGame = new GameFinishedOutputView();
+            outputGame.setId(g.getId());
+            outputGame.setFirstPlayerFullName(String.format("%s %s", g.getFirstPlayer().getName(), g.getFirstPlayer().getLastName()));
+            outputGame.setSecondPlayerFullName(String.format("%s %s", g.getSecondPlayer().getName(), g.getSecondPlayer().getLastName()));
+            outputGame.setFirstGames(g.getWinnerGames());
+            outputGame.setSecondGames(g.getLooserGames());
+            resultfinGames.add(outputGame);
+        });
+        return resultfinGames;
+
     }
 
     @Override

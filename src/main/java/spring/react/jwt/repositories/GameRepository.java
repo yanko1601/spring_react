@@ -17,6 +17,9 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     @Query("SELECT g FROM Game AS g WHERE g.finished=false ")
     List<Game> getAllGamesNotFinished();
 
+    @Query("SELECT g FROM Game AS g WHERE g.finished=true")
+    List<Game> getAllGamesFinished();
+
     @Query("SELECT g FROM Game AS g WHERE g.id = :id")
     Game findGameByid(@Param("id") Long id);
 }

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import spring.react.jwt.model.dtos.GameCreateDto;
 import spring.react.jwt.model.dtos.ResultSetDto;
 import spring.react.jwt.model.entities.Game;
+import spring.react.jwt.model.view.GameFinishedOutputView;
 import spring.react.jwt.model.view.GameOutputView;
 import spring.react.jwt.model.view.OutputMessageView;
 import spring.react.jwt.service.GameService;
@@ -40,6 +41,13 @@ public class GameController {
     public List<GameOutputView>getAllGames() {
 
         return this.gameService.getAllGamesNotFinished();
+    }
+
+    @CrossOrigin
+    @GetMapping("/getallfinished")
+    public List<GameFinishedOutputView>getAllFinishedGames() {
+
+        return this.gameService.getAllGamesFinished();
     }
 
     @CrossOrigin
