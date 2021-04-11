@@ -2,13 +2,12 @@ package spring.react.jwt.Web.Controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import spring.react.jwt.model.dtos.CityAddDto;
 import spring.react.jwt.model.service.CityAddServiceModel;
 import spring.react.jwt.model.view.OutputMessageView;
+import spring.react.jwt.repositories.ChallengeRepository;
+import spring.react.jwt.repositories.GameRepository;
 import spring.react.jwt.service.CityService;
 
 @RestController
@@ -17,13 +16,18 @@ public class AdminController {
 
     private final CityService cityService;
     private final ModelMapper modelMapper;
+    private final ChallengeRepository challengeRepository;
+    private final GameRepository gameRepository;
 
     @Autowired
-    public AdminController(CityService cityService, ModelMapper modelMapper) {
+    public AdminController(CityService cityService, ModelMapper modelMapper, ChallengeRepository challengeRepository, GameRepository gameRepository) {
         this.cityService = cityService;
         this.modelMapper = modelMapper;
+        this.challengeRepository = challengeRepository;
+        this.gameRepository = gameRepository;
     }
 
+    @CrossOrigin
     @PostMapping("/city/add")
     public OutputMessageView addCity(@RequestBody CityAddDto city) {
         OutputMessageView outputMessageView = new OutputMessageView();
@@ -37,5 +41,12 @@ public class AdminController {
         }
 
         return outputMessageView;
+    }
+
+    @CrossOrigin
+    @GetMapping("/endofleague")
+    public void endOfLeague() {
+        this.challengeRepository.deleteAll();
+        this.gameRepository.deleteAll();
     }
 }
