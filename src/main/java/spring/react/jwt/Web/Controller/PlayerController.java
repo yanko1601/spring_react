@@ -3,6 +3,7 @@ package spring.react.jwt.Web.Controller;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.modelmapper.ModelMapper;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import spring.react.jwt.model.dtos.PlayerRegisterDto;
 import spring.react.jwt.model.entities.Player;
@@ -13,6 +14,7 @@ import spring.react.jwt.model.view.PlayerGetFromDbView;
 import spring.react.jwt.model.view.PlayerOutputView;
 import spring.react.jwt.service.PlayerService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController

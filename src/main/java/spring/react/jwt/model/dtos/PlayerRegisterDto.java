@@ -1,6 +1,10 @@
 package spring.react.jwt.model.dtos;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 public class PlayerRegisterDto {
 
